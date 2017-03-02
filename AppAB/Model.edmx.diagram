@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="eab39e9a4ef846efa0191d770130d51b" Name="Diagram1">
+        <EntityTypeShape EntityType="abdbModel.aspnetroles" Width="1.5" PointX="10" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.aspnetuserclaims" Width="1.5" PointX="10" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.aspnetuserlogins" Width="1.5" PointX="10" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.aspnetusers" Width="1.5" PointX="7.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.customers" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.custumer_addresses" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.order_items" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.orders" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.product_brands" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.product_categories" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.product_subcategories" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="abdbModel.products" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="abdbModel.ApplicationUser_Claims" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.ApplicationUser_Logins" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.custumer_addresses_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.orders_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.order_items_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.order_items_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.products_ibfk_3" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.product_subcategories_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.products_ibfk_4" ManuallyRouted="false" />
+        <AssociationConnector Association="abdbModel.aspnetuserroles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
