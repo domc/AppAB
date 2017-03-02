@@ -9,8 +9,6 @@
         <EntityTypeShape EntityType="abdbModel.aspnetuserclaims" Width="1.5" PointX="10" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="abdbModel.aspnetuserlogins" Width="1.5" PointX="10" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="abdbModel.aspnetusers" Width="1.5" PointX="7.75" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="abdbModel.customers" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="abdbModel.custumer_addresses" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="abdbModel.order_items" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="abdbModel.orders" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
         <EntityTypeShape EntityType="abdbModel.product_brands" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
@@ -19,14 +17,15 @@
         <EntityTypeShape EntityType="abdbModel.products" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="abdbModel.ApplicationUser_Claims" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.ApplicationUser_Logins" ManuallyRouted="false" />
-        <AssociationConnector Association="abdbModel.custumer_addresses_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="abdbModel.orders_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.order_items_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.order_items_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.products_ibfk_3" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.product_subcategories_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.products_ibfk_4" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.aspnetuserroles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="abdbModel.user_addresses" Width="1.5" PointX="0.75" PointY="7.375" />
+        <AssociationConnector Association="abdbModel.aspnetusers_ibfk_1" />
+        <AssociationConnector Association="abdbModel.orders_ibfk_11" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

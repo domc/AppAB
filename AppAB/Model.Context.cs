@@ -29,13 +29,12 @@ namespace AppAB
         public virtual DbSet<aspnetuserclaims> aspnetuserclaims { get; set; }
         public virtual DbSet<aspnetuserlogins> aspnetuserlogins { get; set; }
         public virtual DbSet<aspnetusers> aspnetusers { get; set; }
-        public virtual DbSet<customers> customers { get; set; }
-        public virtual DbSet<custumer_addresses> custumer_addresses { get; set; }
         public virtual DbSet<order_items> order_items { get; set; }
         public virtual DbSet<orders> orders { get; set; }
         public virtual DbSet<product_brands> product_brands { get; set; }
         public virtual DbSet<product_categories> product_categories { get; set; }
         public virtual DbSet<product_subcategories> product_subcategories { get; set; }
         public virtual DbSet<products> products { get; set; }
+        public virtual DbSet<user_addresses> user_addresses { get; set; }
     }
 }

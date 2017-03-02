@@ -12,25 +12,25 @@ namespace AppAB
     using System;
     using System.Collections.Generic;
     
-    public partial class customers
+    public partial class user_addresses
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public customers()
+        public user_addresses()
         {
-            this.custumer_addresses = new HashSet<custumer_addresses>();
+            this.aspnetusers = new HashSet<aspnetusers>();
             this.orders = new HashSet<orders>();
         }
     
         public int id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
-        public System.DateTime join_date { get; set; }
-        public int address { get; set; }
+        public string address { get; set; }
+        public string city { get; set; }
+        public string postal_code { get; set; }
+        public string country { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<custumer_addresses> custumer_addresses { get; set; }
+        public virtual ICollection<aspnetusers> aspnetusers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<orders> orders { get; set; }
     }

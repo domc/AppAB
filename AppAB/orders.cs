@@ -21,11 +21,11 @@ namespace AppAB
         }
     
         public int id { get; set; }
-        public int customer { get; set; }
         public decimal total_price { get; set; }
+        public int user_address { get; set; }
     
-        public virtual customers customers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order_items> order_items { get; set; }
+        public virtual user_addresses user_addresses { get; set; }
     }
 }
