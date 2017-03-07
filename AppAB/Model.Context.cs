@@ -35,6 +35,5 @@ namespace AppAB
         public virtual DbSet<product_categories> product_categories { get; set; }
         public virtual DbSet<product_subcategories> product_subcategories { get; set; }
         public virtual DbSet<products> products { get; set; }
-        public virtual DbSet<user_addresses> user_addresses { get; set; }
     }
 }

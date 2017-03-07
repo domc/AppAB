@@ -55,7 +55,12 @@
           <Property Name="LockoutEnabled" Type="bool" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="256" Nullable="false" />
-          <Property Name="user_address" Type="int" />
+          <Property Name="FirstName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="order_items">
           <Key>
@@ -70,8 +75,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_address" Type="int" Nullable="false" />
           <Property Name="total_price" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="user_id" Type="varchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="product_brands">
           <Key>
@@ -107,18 +112,6 @@
           <Property Name="create_date" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="brand" Type="int" Nullable="false" />
           <Property Name="subcategory" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="user_addresses">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="first_name" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="last_name" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="address" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="city" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="postal_code" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="country" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="ApplicationUser_Claims">
           <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="1">
@@ -162,18 +155,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="aspnetusers_ibfk_1">
-          <End Role="user_addresses" Type="Self.user_addresses" Multiplicity="0..1" />
-          <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user_addresses">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="aspnetusers">
-              <PropertyRef Name="user_address" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="IdentityRole_Users">
           <End Role="aspnetroles" Type="Self.aspnetroles" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -213,14 +194,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="orders_ibfk_1">
-          <End Role="user_addresses" Type="Self.user_addresses" Multiplicity="1" />
+          <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="1" />
           <End Role="orders" Type="Self.orders" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="user_addresses">
-              <PropertyRef Name="id" />
+            <Principal Role="aspnetusers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="orders">
-              <PropertyRef Name="user_address" />
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -272,7 +253,6 @@
           <EntitySet Name="product_categories" EntityType="Self.product_categories" Schema="abdb" store:Type="Tables" />
           <EntitySet Name="product_subcategories" EntityType="Self.product_subcategories" Schema="abdb" store:Type="Tables" />
           <EntitySet Name="products" EntityType="Self.products" Schema="abdb" store:Type="Tables" />
-          <EntitySet Name="user_addresses" EntityType="Self.user_addresses" Schema="abdb" store:Type="Tables" />
           <AssociationSet Name="ApplicationUser_Claims" Association="Self.ApplicationUser_Claims">
             <End Role="aspnetusers" EntitySet="aspnetusers" />
             <End Role="aspnetuserclaims" EntitySet="aspnetuserclaims" />
@@ -284,10 +264,6 @@
           <AssociationSet Name="ApplicationUser_Roles" Association="Self.ApplicationUser_Roles">
             <End Role="aspnetusers" EntitySet="aspnetusers" />
             <End Role="aspnetuserroles" EntitySet="aspnetuserroles" />
-          </AssociationSet>
-          <AssociationSet Name="aspnetusers_ibfk_1" Association="Self.aspnetusers_ibfk_1">
-            <End Role="user_addresses" EntitySet="user_addresses" />
-            <End Role="aspnetusers" EntitySet="aspnetusers" />
           </AssociationSet>
           <AssociationSet Name="IdentityRole_Users" Association="Self.IdentityRole_Users">
             <End Role="aspnetroles" EntitySet="aspnetroles" />
@@ -302,7 +278,7 @@
             <End Role="order_items" EntitySet="order_items" />
           </AssociationSet>
           <AssociationSet Name="orders_ibfk_1" Association="Self.orders_ibfk_1">
-            <End Role="user_addresses" EntitySet="user_addresses" />
+            <End Role="aspnetusers" EntitySet="aspnetusers" />
             <End Role="orders" EntitySet="orders" />
           </AssociationSet>
           <AssociationSet Name="product_subcategories_ibfk_1" Association="Self.product_subcategories_ibfk_1">
@@ -370,8 +346,13 @@
           <NavigationProperty Name="aspnetuserclaims" Relationship="Self.ApplicationUser_Claims" FromRole="aspnetusers" ToRole="aspnetuserclaims" />
           <NavigationProperty Name="aspnetuserlogins" Relationship="Self.ApplicationUser_Logins" FromRole="aspnetusers" ToRole="aspnetuserlogins" />
           <NavigationProperty Name="aspnetroles" Relationship="Self.aspnetuserroles" FromRole="aspnetusers" ToRole="aspnetroles" />
-          <Property Name="user_address" Type="Int32" />
-          <NavigationProperty Name="user_addresses" Relationship="abdbModel.aspnetusers_ibfk_1" FromRole="aspnetusers" ToRole="user_addresses" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="orders" Relationship="abdbModel.orders_ibfk_1" FromRole="aspnetusers" ToRole="orders" />
         </EntityType>
         <EntityType Name="order_items">
           <Key>
@@ -390,8 +371,8 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="total_price" Type="Decimal" Nullable="false" />
           <NavigationProperty Name="order_items" Relationship="Self.order_items_ibfk_1" FromRole="orders" ToRole="order_items" />
-          <Property Name="user_address" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="user_addresses" Relationship="abdbModel.orders_ibfk_11" FromRole="orders" ToRole="user_addresses" />
+          <Property Name="user_id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="aspnetusers" Relationship="abdbModel.orders_ibfk_1" FromRole="orders" ToRole="aspnetusers" />
         </EntityType>
         <EntityType Name="product_brands">
           <Key>
@@ -570,51 +551,20 @@
             <End Role="aspnetusers" EntitySet="aspnetusers" />
             <End Role="aspnetroles" EntitySet="aspnetroles" />
           </AssociationSet>
-          <EntitySet Name="user_addresses" EntityType="abdbModel.user_addresses" />
-          <AssociationSet Name="aspnetusers_ibfk_1" Association="abdbModel.aspnetusers_ibfk_1">
-            <End Role="user_addresses" EntitySet="user_addresses" />
+          <AssociationSet Name="orders_ibfk_1" Association="abdbModel.orders_ibfk_1">
             <End Role="aspnetusers" EntitySet="aspnetusers" />
-          </AssociationSet>
-          <AssociationSet Name="orders_ibfk_11" Association="abdbModel.orders_ibfk_11">
-            <End Role="user_addresses" EntitySet="user_addresses" />
             <End Role="orders" EntitySet="orders" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="user_addresses">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="first_name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="last_name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="city" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="postal_code" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="country" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="aspnetusers" Relationship="abdbModel.aspnetusers_ibfk_1" FromRole="user_addresses" ToRole="aspnetusers" />
-          <NavigationProperty Name="orders" Relationship="abdbModel.orders_ibfk_11" FromRole="user_addresses" ToRole="orders" />
-        </EntityType>
-        <Association Name="aspnetusers_ibfk_1">
-          <End Type="abdbModel.user_addresses" Role="user_addresses" Multiplicity="0..1" />
-          <End Type="abdbModel.aspnetusers" Role="aspnetusers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user_addresses">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="aspnetusers">
-              <PropertyRef Name="user_address" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="orders_ibfk_11">
-          <End Type="abdbModel.user_addresses" Role="user_addresses" Multiplicity="1" />
+        <Association Name="orders_ibfk_1">
+          <End Type="abdbModel.aspnetusers" Role="aspnetusers" Multiplicity="1" />
           <End Type="abdbModel.orders" Role="orders" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="user_addresses">
-              <PropertyRef Name="id" />
+            <Principal Role="aspnetusers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="orders">
-              <PropertyRef Name="user_address" />
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -654,7 +604,12 @@
           <EntitySetMapping Name="aspnetusers">
             <EntityTypeMapping TypeName="abdbModel.aspnetusers">
               <MappingFragment StoreEntitySet="aspnetusers">
-                <ScalarProperty Name="user_address" ColumnName="user_address" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -682,7 +637,7 @@
           <EntitySetMapping Name="orders">
             <EntityTypeMapping TypeName="abdbModel.orders">
               <MappingFragment StoreEntitySet="orders">
-                <ScalarProperty Name="user_address" ColumnName="user_address" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="total_price" ColumnName="total_price" />
               </MappingFragment>
@@ -735,19 +690,6 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="user_addresses">
-            <EntityTypeMapping TypeName="abdbModel.user_addresses">
-              <MappingFragment StoreEntitySet="user_addresses">
-                <ScalarProperty Name="country" ColumnName="country" />
-                <ScalarProperty Name="postal_code" ColumnName="postal_code" />
-                <ScalarProperty Name="city" ColumnName="city" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="last_name" ColumnName="last_name" />
-                <ScalarProperty Name="first_name" ColumnName="first_name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

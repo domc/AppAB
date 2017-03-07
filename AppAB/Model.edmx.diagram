@@ -23,9 +23,7 @@
         <AssociationConnector Association="abdbModel.product_subcategories_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.products_ibfk_4" ManuallyRouted="false" />
         <AssociationConnector Association="abdbModel.aspnetuserroles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="abdbModel.user_addresses" Width="1.5" PointX="0.75" PointY="7.375" />
-        <AssociationConnector Association="abdbModel.aspnetusers_ibfk_1" />
-        <AssociationConnector Association="abdbModel.orders_ibfk_11" />
+        <AssociationConnector Association="abdbModel.orders_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,6 +15,7 @@ namespace AppAB.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private abdbEntities db = new abdbEntities();
 
         public ManageController()
         {
@@ -72,6 +73,7 @@ namespace AppAB.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+
             return View(model);
         }
 
