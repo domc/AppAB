@@ -279,3 +279,6 @@ __pycache__/
 
 # Telerik's JustMock configuration file
 *.jmconfig
+
+# MY files
+users.txt
