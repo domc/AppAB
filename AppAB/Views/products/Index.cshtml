@@ -1,0 +1,62 @@
+﻿@model IEnumerable<AppAB.products>
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @if (ViewBag.Title == "Parfumi")
+    {
+        @Html.ActionLink("Dodaj nov parfum", "Create", new { subcategory = "parfumi" })
+    }
+    else if (ViewBag.Title == "Izdelki za nego telesa")
+    {
+        @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "nega" })
+    }
+    else if (ViewBag.Title == "Izdelki za nego nohtov")
+    {
+        @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "nohti" })
+    }
+    else if (ViewBag.Title == "Makeup")
+    {
+        @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "make_up" })
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>        
+        <th>Operacije</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.image)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.price)
+        </td>        
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
