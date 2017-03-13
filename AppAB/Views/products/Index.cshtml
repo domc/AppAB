@@ -22,20 +22,31 @@
 </p>
 <hr />
 <div class="row">
+    <div id="leftSide" class="col-sm-3 col-md-2">
+        <ul>
+            @foreach (var cat in ViewBag.listCategories)
+            {
+                <li><a href="#" class="filterLink">@cat.name</a></li>
+            }            
+        </ul>
+    </div>
+    <div id="rightSide" class="col-sm-offset-3 col-md-offset-2">
     @foreach (var item in Model)
     {
         <div class="col-sm-3 col-md-2">
             <div class="thumbnail">
                 <img src="~/Content/Images/sample.jpg" alt="Slika">
                 <div class="caption">
-                    <h4 style="max-height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.name)</h4>                    
+                    <h4 style="max-height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.name)</h4>
                     <p style="max-height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.description)</p>
                     <p>@Html.DisplayFor(modelItem => item.price) €</p>
                     <p>@Html.ActionLink("Uredi", "Edit", new { id = item.id }) |
                     @Html.ActionLink("Več", "Details", new { id = item.id }) |
-                    @Html.ActionLink("Izbriši", "Delete", new { id = item.id })</p>
+                    @Html.ActionLink("Izbriši", "Delete", new { id = item.id })
+                    </p>
                 </div>
             </div>
         </div>
     }
+    </div>
 </div>

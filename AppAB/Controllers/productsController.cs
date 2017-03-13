@@ -20,8 +20,12 @@ namespace AppAB.Controllers
             //Query parfumes
             var products = db.products.Include(p => p.product_brands).Include(p => p.product_subcategories).Include(p => p.product_subcategories.product_categories);
             products = products.Where(p => p.product_subcategories.product_categories.id == 1);
-
+            
             ViewBag.Title = "Parfumi";
+
+            //Seznam kategorij za filter
+            var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "parfumi");
+            ViewBag.listCategories = showCategories;
 
             return View(products.ToList());
         }
@@ -37,6 +41,12 @@ namespace AppAB.Controllers
 
             ViewBag.Title = "Izdelki za nego telesa";
 
+            //Seznam kategorij za filter
+            var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "nega_obraza" ||
+                                                                     s.product_categories.name == "nega_telesa" ||
+                                                                     s.product_categories.name == "nega_las");
+            ViewBag.listCategories = showCategories;
+
             return View("Index", products.ToList());
         }
 
@@ -49,6 +59,10 @@ namespace AppAB.Controllers
 
             ViewBag.Title = "Izdelki za nego nohtov";
 
+            //Seznam kategorij za filter
+            var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "nohti");
+            ViewBag.listCategories = showCategories;
+
             return View("Index", products.ToList());
         }
 
@@ -60,6 +74,10 @@ namespace AppAB.Controllers
             products = products.Where(p => p.product_subcategories.product_categories.id == 6);
 
             ViewBag.Title = "Makeup";
+
+            //Seznam kategorij za filter
+            var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "make_up");
+            ViewBag.listCategories = showCategories;
 
             return View("Index", products.ToList());
         }
