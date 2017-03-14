@@ -15,30 +15,52 @@ namespace AppAB.Controllers
         private abdbEntities db = new abdbEntities();
 
         // GET: products(/parfumi)
-        public ActionResult Index()
+        public ActionResult Index(string filterCategory)
         {
             //Query parfumes
             var products = db.products.Include(p => p.product_brands).Include(p => p.product_subcategories).Include(p => p.product_subcategories.product_categories);
-            products = products.Where(p => p.product_subcategories.product_categories.id == 1);
-            
-            ViewBag.Title = "Parfumi";
 
-            //Seznam kategorij za filter
+            //Filtriranje če je izbrana kategorija
+            if (String.IsNullOrEmpty(filterCategory))
+            {
+                products = products.Where(p => p.product_subcategories.product_categories.name == "parfumi");
+            }
+            else
+            {
+                products = products.Where(p => p.product_subcategories.name == filterCategory);
+            }            
+
+
+            ViewBag.Title = "Parfumi";
+            ViewBag.action = "Index";
+
+            //Seznam kategorij za izbiro/filter
             var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "parfumi");
             ViewBag.listCategories = showCategories;
 
             return View(products.ToList());
         }
 
+
         // GET: products/nega
-        public ActionResult Nega()
+        public ActionResult Nega(string filterCategory)
         {
             //Query izdelke za nego
             var products = db.products.Include(p => p.product_brands).Include(p => p.product_subcategories).Include(p => p.product_subcategories.product_categories);
-            products = products.Where(p => p.product_subcategories.product_categories.id == 3 ||
-                                            p.product_subcategories.product_categories.id == 4 ||
-                                            p.product_subcategories.product_categories.id == 5);
+            
+            //Filtriranje če je izbrana kategorija
+            if (String.IsNullOrEmpty(filterCategory))
+            {
+                products = products.Where(p => p.product_subcategories.product_categories.name == "nega_obraza" ||
+                                            p.product_subcategories.product_categories.name == "nega_telesa" ||
+                                            p.product_subcategories.product_categories.name == "nega_las");
+            }
+            else
+            {
+                products = products.Where(p => p.product_subcategories.name == filterCategory);
+            }
 
+            ViewBag.action = "Nega";
             ViewBag.Title = "Izdelki za nego telesa";
 
             //Seznam kategorij za filter
@@ -51,12 +73,23 @@ namespace AppAB.Controllers
         }
 
         // GET: products/nohti
-        public ActionResult Nohti()
+        public ActionResult Nohti(string filterCategory)
         {
             //Query izdelke za nohte
             var products = db.products.Include(p => p.product_brands).Include(p => p.product_subcategories).Include(p => p.product_subcategories.product_categories);
-            products = products.Where(p => p.product_subcategories.product_categories.id == 2);
+            
 
+            //Filtriranje če je izbrana kategorija
+            if (String.IsNullOrEmpty(filterCategory))
+            {
+                products = products.Where(p => p.product_subcategories.product_categories.name == "nohti");
+            }
+            else
+            {
+                products = products.Where(p => p.product_subcategories.name == filterCategory);
+            }
+
+            ViewBag.action = "Nohti";
             ViewBag.Title = "Izdelki za nego nohtov";
 
             //Seznam kategorij za filter
@@ -67,12 +100,23 @@ namespace AppAB.Controllers
         }
 
         // GET: products/make_up
-        public ActionResult MakeUp()
+        public ActionResult MakeUp(string filterCategory)
         {
             //Query izdelke za nohte
             var products = db.products.Include(p => p.product_brands).Include(p => p.product_subcategories).Include(p => p.product_subcategories.product_categories);
-            products = products.Where(p => p.product_subcategories.product_categories.id == 6);
+            
 
+            //Filtriranje če je izbrana kategorija
+            if (String.IsNullOrEmpty(filterCategory))
+            {
+                products = products.Where(p => p.product_subcategories.product_categories.name == "make_up");
+            }
+            else
+            {
+                products = products.Where(p => p.product_subcategories.name == filterCategory);
+            }
+
+            ViewBag.action = "Makeup";
             ViewBag.Title = "Makeup";
 
             //Seznam kategorij za filter

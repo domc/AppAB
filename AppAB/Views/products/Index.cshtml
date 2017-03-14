@@ -26,7 +26,7 @@
         <ul>
             @foreach (var cat in ViewBag.listCategories)
             {
-                <li><a href="#" class="filterLink">@cat.name</a></li>
+                <li>@Html.ActionLink((String)cat.name, (string)ViewBag.action, new { filterCategory = (String)cat.name }, new { @class = "filterLink" })</li>
             }            
         </ul>
     </div>
