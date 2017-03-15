@@ -142,6 +142,7 @@ namespace AppAB.Controllers
         }
 
         // GET: products/Create/subcategory(ie "parfumi")
+        [Authorize(Roles = "admin")]
         public ActionResult Create(string subcategory)
         {
             ViewBag.brand = new SelectList(db.product_brands, "id", "name");
@@ -165,6 +166,7 @@ namespace AppAB.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Create([Bind(Include = "id,name,description,image,price,create_date,brand,subcategory")] products products)
         {
             if (ModelState.IsValid)
@@ -180,6 +182,7 @@ namespace AppAB.Controllers
         }
 
         // GET: products/Edit/5
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -201,6 +204,7 @@ namespace AppAB.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Edit([Bind(Include = "id,name,description,image,price,create_date,brand,subcategory")] products products)
         {
             if (ModelState.IsValid)
@@ -215,6 +219,7 @@ namespace AppAB.Controllers
         }
 
         // GET: products/Delete/5
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -232,6 +237,7 @@ namespace AppAB.Controllers
         // POST: products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             products products = db.products.Find(id);

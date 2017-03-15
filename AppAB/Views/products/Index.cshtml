@@ -2,31 +2,34 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>
-    @if (ViewBag.Title == "Parfumi")
-    {
-        @Html.ActionLink("Dodaj nov parfum", "Create", new { subcategory = "parfumi" })
-    }
-    else if (ViewBag.Title == "Izdelki za nego telesa")
-    {
-        @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "nega" })
-    }
-    else if (ViewBag.Title == "Izdelki za nego nohtov")
-    {
-        @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "nohti" })
-    }
-    else if (ViewBag.Title == "Makeup")
-    {
-        @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "make_up" })
-    }
-</p>
+@if (Request.IsAuthenticated && User.IsInRole("admin"))
+{
+    <p>
+        @if (ViewBag.Title == "Parfumi")
+        {
+            @Html.ActionLink("Dodaj nov parfum", "Create", new { subcategory = "parfumi" })
+        }
+        else if (ViewBag.Title == "Izdelki za nego telesa")
+        {
+            @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "nega" })
+        }
+        else if (ViewBag.Title == "Izdelki za nego nohtov")
+        {
+            @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "nohti" })
+        }
+        else if (ViewBag.Title == "Makeup")
+        {
+            @Html.ActionLink("Dodaj nov izdelek", "Create", new { subcategory = "make_up" })
+        }
+    </p>
+}
 <hr />
 <div class="row">
     <div id="leftSide" class="col-sm-3 col-md-2">
         <ul>
             @foreach (var cat in ViewBag.listCategories)
             {
-                <li>@Html.ActionLink((String)cat.name, (string)ViewBag.action, new { filterCategory = (String)cat.name }, new { @class = "filterLink" })</li>
+                <li>@Html.ActionLink((string)cat.name, (string)ViewBag.action, new { filterCategory = (string)cat.name }, new { @class = "filterLink" })</li>
             }            
         </ul>
     </div>
@@ -40,10 +43,14 @@
                     <h4 style="max-height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.name)</h4>
                     <p style="max-height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.description)</p>
                     <p>@Html.DisplayFor(modelItem => item.price) €</p>
-                    <p>@Html.ActionLink("Uredi", "Edit", new { id = item.id }) |
-                    @Html.ActionLink("Več", "Details", new { id = item.id }) |
-                    @Html.ActionLink("Izbriši", "Delete", new { id = item.id })
-                    </p>
+                    <p>@Html.ActionLink("Podrobnosti", "Details", new { id = item.id })</p>
+                    @if (Request.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <p>
+                            @Html.ActionLink("Uredi", "Edit", new { id = item.id }) |
+                            @Html.ActionLink("Izbriši", "Delete", new { id = item.id })
+                        </p>
+                    }
                 </div>
             </div>
         </div>
