@@ -10,7 +10,7 @@ using AppAB;
 
 namespace AppAB.Controllers
 {
-    public class productsController : Controller
+    public class ProductsController : Controller
     {
         private abdbEntities db = new abdbEntities();
 

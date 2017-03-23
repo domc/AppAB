@@ -17,15 +17,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("A&B", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("A&B", "Index", "Products", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Parfumi", "Index", "products")</li>
-                    <li>@Html.ActionLink("Nega", "Nega", "products")</li>
-                    <li>@Html.ActionLink("Nohti", "Nohti", "products")</li>
-                    <li>@Html.ActionLink("Makeup", "MakeUp", "products")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Parfumi", "Index", "Products")</li>
+                    <li>@Html.ActionLink("Nega", "Nega", "Products")</li>
+                    <li>@Html.ActionLink("Nohti", "Nohti", "Products")</li>
+                    <li>@Html.ActionLink("Makeup", "MakeUp", "Products")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -35,7 +34,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Dobrodošli v spletni trgovini A&B parfumerije in kozmetike!!!</p>
         </footer>
     </div>
 
