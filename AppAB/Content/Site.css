@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background: papayawhip url("/Content/Images/pink_rice.png") repeat;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -29,10 +30,12 @@ div#leftSide ul {
     padding-left: 0;
     background-color: #222222;
     color: #999999;
+    border-radius: 5px;
+    border: 2px solid #999999;
 }
-    div#leftSide ul li {
-        padding-left: 10%;
-    }
+div#leftSide ul li {
+    padding-left: 10%;
+}
 a.filterLink {
     color: #999999;
 }
@@ -47,7 +50,13 @@ div#leftSide ul li.active a{
     color: deeppink !important;
 }
 
-/*Thumbnails linki*/
+/*Thumbnails+linki*/
+.thumbnail{
+    margin-bottom:2%;
+    padding-bottom: 0;
+    border-radius: 5px;
+    border: 2px solid #999999;
+}
 .thumbnail a {
     color: deeppink;
 }
@@ -81,4 +90,8 @@ div#leftSide ul li.active a{
 /*Footer*/
 footer {
     text-align: center !important;
+}
+
+hr {
+    border-top: 2px solid #999999;
 }
