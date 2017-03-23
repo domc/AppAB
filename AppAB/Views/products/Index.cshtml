@@ -29,7 +29,7 @@
         <ul>
             @foreach (var cat in ViewBag.listCategories)
             {
-                <li>@Html.ActionLink((string)cat.name, (string)ViewBag.action, new { filterCategory = (string)cat.name }, new { @class = "filterLink" })</li>
+                <li class="@((Request.QueryString["filterCategory"]!=null && Request.QueryString["filterCategory"] == (string)cat.name) ? "active" : "")">@Html.ActionLink((string)cat.name, (string)ViewBag.action, new { filterCategory = (string)cat.name }, new { @class = "filterLink" })</li>
             }            
         </ul>
     </div>
