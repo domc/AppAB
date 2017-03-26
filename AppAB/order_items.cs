@@ -15,8 +15,9 @@ namespace AppAB
     public partial class order_items
     {
         public int id { get; set; }
-        public int order_id { get; set; }
-        public int product { get; set; }
+        public string order_id { get; set; }
+        public int product_id { get; set; }
+        public int Quantity { get; set; }
     
         public virtual orders orders { get; set; }
         public virtual products products { get; set; }

@@ -15,7 +15,7 @@ namespace AppAB.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private abdbEntities db = new abdbEntities();
+        private abEntities db = new abEntities();
 
         public ManageController()
         {

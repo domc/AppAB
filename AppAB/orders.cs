@@ -20,12 +20,12 @@ namespace AppAB
             this.order_items = new HashSet<order_items>();
         }
     
-        public int id { get; set; }
+        public string id { get; set; }
         public decimal total_price { get; set; }
         public string user_id { get; set; }
     
+        public virtual aspnetusers aspnetusers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order_items> order_items { get; set; }
-        public virtual aspnetusers aspnetusers { get; set; }
     }
 }

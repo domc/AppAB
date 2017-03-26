@@ -13,10 +13,10 @@ namespace AppAB
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class abdbEntities : DbContext
+    public partial class abEntities : DbContext
     {
-        public abdbEntities()
-            : base("name=abdbEntities")
+        public abEntities()
+            : base("name=abEntities")
         {
         }
     

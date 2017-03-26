@@ -19,8 +19,8 @@ namespace AppAB
         {
             this.aspnetuserclaims = new HashSet<aspnetuserclaims>();
             this.aspnetuserlogins = new HashSet<aspnetuserlogins>();
-            this.aspnetroles = new HashSet<aspnetroles>();
             this.orders = new HashSet<orders>();
+            this.aspnetroles = new HashSet<aspnetroles>();
         }
     
         public string Id { get; set; }
@@ -47,8 +47,8 @@ namespace AppAB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<aspnetuserlogins> aspnetuserlogins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<aspnetroles> aspnetroles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<orders> orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<aspnetroles> aspnetroles { get; set; }
     }
 }

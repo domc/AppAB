@@ -166,7 +166,7 @@ namespace AppAB.Controllers
                     //Assign Role to user Here      
                     await UserManager.AddToRoleAsync(user.Id, "user");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Products");
                 }
                 AddErrors(result);
             }
@@ -395,7 +395,7 @@ namespace AppAB.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Products");
         }
 
         //
@@ -452,7 +452,7 @@ namespace AppAB.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Products");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

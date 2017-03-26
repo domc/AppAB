@@ -12,7 +12,7 @@ namespace AppAB.Controllers
 {
     public class ProductsController : Controller
     {
-        private abdbEntities db = new abdbEntities();
+        private abEntities db = new abEntities();
 
         // GET: products(/parfumi)
         public ActionResult Index(string filterCategory)
