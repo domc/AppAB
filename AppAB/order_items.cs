@@ -18,7 +18,6 @@ namespace AppAB
         public int id { get; set; }
         public string order_id { get; set; }
         public int product_id { get; set; }
-
         [Display(Name = "Kolièina")]
         public int Quantity { get; set; }
     

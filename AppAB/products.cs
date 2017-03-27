@@ -22,7 +22,6 @@ namespace AppAB
         }
     
         public int id { get; set; }
-
         [Required]
         [Display(Name = "Artikel")]
         public string name { get; set; }
@@ -37,6 +36,7 @@ namespace AppAB
 
         [Required]
         [Display(Name = "Cena")]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public decimal price { get; set; }
 
         [Display(Name = "Dodano")]
@@ -49,7 +49,7 @@ namespace AppAB
         [Required]
         [Display(Name = "Kategorija")]
         public int subcategory { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order_items> order_items { get; set; }
         public virtual product_brands product_brands { get; set; }

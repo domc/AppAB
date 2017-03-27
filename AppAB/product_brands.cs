@@ -22,7 +22,6 @@ namespace AppAB
         }
     
         public int id { get; set; }
-
         [Display(Name = "Znamka")]
         public string name { get; set; }
     

@@ -22,7 +22,6 @@ namespace AppAB
         }
     
         public string id { get; set; }
-
         [Display(Name = "Skupna cena")]
         public decimal total_price { get; set; }
         public string user_id { get; set; }

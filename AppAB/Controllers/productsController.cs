@@ -147,7 +147,7 @@ namespace AppAB.Controllers
         {
             ViewBag.brand = new SelectList(db.product_brands, "id", "name");
             
-            if (String.IsNullOrEmpty(subcategory))
+            if (string.IsNullOrEmpty(subcategory))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -171,6 +171,7 @@ namespace AppAB.Controllers
         {
             if (ModelState.IsValid)
             {
+                products.create_date = DateTime.Now;
                 db.products.Add(products);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -209,6 +210,7 @@ namespace AppAB.Controllers
         {
             if (ModelState.IsValid)
             {
+                products.create_date = DateTime.Now;
                 db.Entry(products).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
