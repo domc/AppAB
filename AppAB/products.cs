@@ -36,8 +36,8 @@ namespace AppAB
 
         [Required]
         [Display(Name = "Cena")]
-        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
-        public decimal price { get; set; }
+        [RegularExpression(@"^\d+\,\d{0,2}$", ErrorMessage = "Za vnos cene uporabi format brez presledkov in z vejico za decimalko: 110,00")]
+        public string price { get; set; }
 
         [Display(Name = "Dodano")]
         public System.DateTime create_date { get; set; }

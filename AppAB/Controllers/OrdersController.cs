@@ -10,6 +10,7 @@ using AppAB;
 using Microsoft.AspNet.Identity;
 using AppAB.Models;
 using Microsoft.AspNet.Identity.Owin;
+using System.Globalization;
 
 namespace AppAB.Controllers
 {
@@ -97,7 +98,7 @@ namespace AppAB.Controllers
                     orders newOrder = new orders();
                     newOrder.id = guidid;
                     newOrder.user_id = user.Id;
-                    newOrder.total_price = product.price;
+                    newOrder.total_price = Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
                     db.orders.Add(newOrder);
 
                     //dodaj vnos v vmesno tabelo
@@ -123,7 +124,7 @@ namespace AppAB.Controllers
                         {
                             //Increase quantity if the product is already on the order
                             item.Quantity += 1;
-                            order.total_price += item.products.price;
+                            order.total_price += Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
                         }
                         else
                         {
@@ -134,7 +135,7 @@ namespace AppAB.Controllers
                             item.Quantity = 1;
 
                             order.order_items.Add(item);
-                            order.total_price += product.price;
+                            order.total_price += Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
                         }
                     }
                     else
@@ -154,7 +155,7 @@ namespace AppAB.Controllers
                         orders newOrder = new orders();
                         newOrder.id = guidid;
                         newOrder.user_id = user.Id;
-                        newOrder.total_price = product.price;
+                        newOrder.total_price = Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
                         db.orders.Add(newOrder);
 
                         //dodaj vnos v vmesno tabelo

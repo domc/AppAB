@@ -109,7 +109,7 @@
           <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="description" Type="text" Nullable="false" />
           <Property Name="image" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="price" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="create_date" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="brand" Type="int" Nullable="false" />
           <Property Name="subcategory" Type="int" Nullable="false" />
@@ -410,7 +410,7 @@
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="image" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="price" Type="Decimal" Nullable="false" />
+          <Property Name="price" Type="String" Nullable="false" />
           <Property Name="create_date" Type="DateTime" Nullable="false" />
           <Property Name="brand" Type="Int32" Nullable="false" />
           <Property Name="subcategory" Type="Int32" Nullable="false" />
