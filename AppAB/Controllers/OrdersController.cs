@@ -54,9 +54,10 @@ namespace AppAB.Controllers
             {
                 return HttpNotFound();
             }
-            else if (System.Web.HttpContext.Current.User.Identity.GetUserId() != orders.user_id)
+            else if (System.Web.HttpContext.Current.User.Identity.GetUserId() != orders.user_id && !System.Web.HttpContext.Current.User.IsInRole("admin"))
             {
                 //If order wasn't made by currently signed user return empty view/cart
+                //Admin is an exception, so he can check others orders..
                 return View();
             }
 

@@ -17,7 +17,7 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.total_price)
+                @Html.DisplayFor(model => model.total_price) €
             </dd>
 
             <dt>
@@ -32,19 +32,19 @@
         @foreach (order_items item in Model.order_items)
         {
             <dl class="dl-horizontal">
-                <dt>Izdelek</dt>
+                <dt>@Html.DisplayNameFor(modelItem => item.products.name)</dt>
                 <dd>
                     @Html.DisplayFor(modelItem => item.products.name)
                 </dd>
-                <dt>Znamka</dt>
+                <dt>@Html.DisplayNameFor(modelItem => item.products.product_brands.name)</dt>
                 <dd>
                     @Html.DisplayFor(modelItem => item.products.product_brands.name)
                 </dd>
-                <dt>Cena</dt>
+                <dt>@Html.DisplayNameFor(modelItem => item.products.price)</dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => item.products.price)
+                    @Html.DisplayFor(modelItem => item.products.price) €
                 </dd>
-                <dt>Količina</dt>
+                <dt>@Html.DisplayNameFor(modelItem => item.Quantity)</dt>
                 <dd>
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </dd>

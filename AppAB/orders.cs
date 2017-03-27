@@ -11,7 +11,8 @@ namespace AppAB
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class orders
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,6 +22,8 @@ namespace AppAB
         }
     
         public string id { get; set; }
+
+        [Display(Name = "Skupna cena")]
         public decimal total_price { get; set; }
         public string user_id { get; set; }
     
