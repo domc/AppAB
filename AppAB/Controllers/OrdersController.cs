@@ -16,6 +16,7 @@ namespace AppAB.Controllers
     public class OrdersController : Controller
     {
         private abEntities db = new abEntities();
+        public const string CartSessionKey = "CartId";
 
         // GET: Orders
         public ActionResult Index()
@@ -73,34 +74,65 @@ namespace AppAB.Controllers
             }
             else
             {
-                //Generate new GUID
-                orders findOrder;
-                string guidid = "";
-                do
-                {
-                    Guid GUIDid = Guid.NewGuid();
-                    guidid = GUIDid.ToString();
-                    findOrder = db.orders.Find(guidid);
-                }
-                while (findOrder != null);
+                HttpContextBase context = this.HttpContext;
 
                 //Find current user and product to add
-                aspnetusers user = db.aspnetusers.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
                 products product = db.products.Find(productId);
+                aspnetusers user = db.aspnetusers.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
 
-                //Create new order with selected(added to cart) product
-                orders newOrder = new orders();
-                newOrder.id = guidid;                
-                newOrder.user_id = user.Id;
-                newOrder.total_price = product.price;
-                db.orders.Add(newOrder);
+                if (context.Session[CartSessionKey] == null)
+                {
+                    //Generate new GUID
+                    orders findOrder;
+                    string guidid = "";
+                    do
+                    {
+                        Guid GUIDid = Guid.NewGuid();
+                        guidid = GUIDid.ToString();
+                        findOrder = db.orders.Find(guidid);
+                    }
+                    while (findOrder != null);                                        
 
+                    //Create new order with selected(added to cart) product
+                    orders newOrder = new orders();
+                    newOrder.id = guidid;
+                    newOrder.user_id = user.Id;
+                    newOrder.total_price = product.price;
+                    db.orders.Add(newOrder);
 
-                //dodaj vnos v vmesno tabelo
-                order_items item = new order_items();
-                item.order_id = guidid;
-                item.product_id = product.id;
-                db.order_items.Add(item);                
+                    //dodaj vnos v vmesno tabelo
+                    order_items item = new order_items();
+                    item.order_id = guidid;
+                    item.product_id = product.id;
+                    item.Quantity = 1;
+                    db.order_items.Add(item);
+
+                    //Set cookie
+                    context.Session[CartSessionKey] = guidid;
+                }
+                else
+                {
+                    //Find the order
+                    orders order = db.orders.Find(context.Session[CartSessionKey].ToString());
+                    order_items item = db.order_items.Where(i => i.order_id == order.id && i.product_id == product.id).FirstOrDefault();
+                    if (item != null)
+                    {
+                        //Increase quantity if the product is already on the order
+                        item.Quantity += 1;
+                        order.total_price += item.products.price;
+                    }
+                    else
+                    {
+                        //Add product to order
+                        item = new order_items();
+                        item.order_id = order.id;
+                        item.product_id = product.id;
+                        item.Quantity = 1;
+
+                        order.order_items.Add(item);
+                        order.total_price += product.price;
+                    }                    
+                }
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
