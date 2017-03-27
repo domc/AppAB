@@ -25,7 +25,14 @@
                     <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Nega" ? "active" : "")">@Html.ActionLink("Nega", "Nega", "Products")</li>
                     <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Nohti" ? "active" : "")">@Html.ActionLink("Nohti", "Nohti", "Products")</li>
                     <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "MakeUp" ? "active" : "")">@Html.ActionLink("Makeup", "MakeUp", "Products")</li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders" ? "active" : "")">@Html.ActionLink("Košarica", "Index", "Orders")</li>
+                    @if (Request.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Naročila", "Index", "Orders")</li>
+                    }
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders" && ViewContext.RouteData.Values["Action"].ToString() == "Details" ? "active" : "")">@Html.ActionLink("Košarica", "Details", "Orders", new { id = "MyCart" }, null)</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

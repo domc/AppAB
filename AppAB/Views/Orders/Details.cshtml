@@ -6,50 +6,53 @@
 
 <h2>Moj voziček</h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.total_price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.total_price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.aspnetusers.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.aspnetusers.Email)
-        </dd>        
-    </dl>
-    <hr />
-    @foreach (order_items item in Model.order_items)
-    {
-        <dl class="dl-horizontal">
-            <dt>Izdelek</dt>
-            <dd>
-                @Html.DisplayFor(modelItem => item.products.name)
-            </dd>
-            <dt>Znamka</dt>
-            <dd>
-                @Html.DisplayFor(modelItem => item.products.product_brands.name)
-            </dd>
-            <dt>Cena</dt>
-            <dd>
-                @Html.DisplayFor(modelItem => item.products.price)
-            </dd>
-            <dt>Količina</dt>
-            <dd>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </dd>
-        </dl>
-     }
-</div>
 <hr />
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+@if (Model != null)
+{
+    <div>        
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.total_price)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.total_price)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.aspnetusers.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.aspnetusers.Email)
+            </dd>        
+        </dl>
+        <hr />
+        @foreach (order_items item in Model.order_items)
+        {
+            <dl class="dl-horizontal">
+                <dt>Izdelek</dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.products.name)
+                </dd>
+                <dt>Znamka</dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.products.product_brands.name)
+                </dd>
+                <dt>Cena</dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.products.price)
+                </dd>
+                <dt>Količina</dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </dd>
+            </dl>
+        }
+    </div>
+}
+else
+{
+    <p>Vaša košarica je prazna.</p>
+}

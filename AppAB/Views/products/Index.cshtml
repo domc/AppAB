@@ -43,9 +43,12 @@
                     <h4 style="max-height: 37px; overflow: hidden;">@Html.ActionLink((string)item.name, "Details", new { id = item.id })</h4>
                     <p style="max-height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.description)</p>
                     <p>@Html.DisplayFor(modelItem => item.price) €</p>
-                    <form method="post" action="@Url.Action("AddToOrder", "Orders", new { productId = item.id })">
-                        <input type="submit" class="btn btn-default" value="V košarico" />
-                    </form>
+                    @if (Request.IsAuthenticated)
+                    { 
+                        <form method="post" action="@Url.Action("AddToOrder", "Orders", new { productId = item.id })">
+                            <input type="submit" class="btn btn-default" value="V košarico" />
+                        </form>
+                    }
                     @if (Request.IsAuthenticated && User.IsInRole("admin"))
                     {
                         <p>
