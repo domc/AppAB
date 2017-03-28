@@ -36,7 +36,7 @@ namespace AppAB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            //Find orderId(Session) if it exists
+            //Find orderId(from Session) if it exists
             if (id == "MyCart")
             {
                 HttpContextBase context = this.HttpContext;
@@ -50,6 +50,8 @@ namespace AppAB.Controllers
                 }
 
             }
+
+            //Get order from db
             orders orders = db.orders.Find(id);
             if (orders == null)
             {
@@ -83,40 +85,14 @@ namespace AppAB.Controllers
 
                 if (context.Session[CartSessionKey] == null)
                 {
-                    //Generate new GUID
-                    orders findOrder;
-                    string guidid = "";
-                    do
-                    {
-                        Guid GUIDid = Guid.NewGuid();
-                        guidid = GUIDid.ToString();
-                        findOrder = db.orders.Find(guidid);
-                    }
-                    while (findOrder != null);
-
-                    //Create new order with selected(added to cart) product
-                    orders newOrder = new orders();
-                    newOrder.id = guidid;
-                    newOrder.user_id = user.Id;
-                    newOrder.total_price = Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
-                    db.orders.Add(newOrder);
-
-                    //dodaj vnos v vmesno tabelo
-                    order_items item = new order_items();
-                    item.order_id = guidid;
-                    item.product_id = product.id;
-                    item.Quantity = 1;
-                    db.order_items.Add(item);
-
-                    //Set cookie
-                    context.Session[CartSessionKey] = guidid;
+                    CreateNewOrder(context, product, user);
                 }
                 else
                 {
                     //Find the order
                     orders order = db.orders.Find(context.Session[CartSessionKey].ToString());
 
-                    //If order was made by current user, add product to it, if not, create new order
+                    //If order was made by current user, add product to it, if not, create a new order
                     if (order.user_id == user.Id)
                     {
                         order_items item = db.order_items.Where(i => i.order_id == order.id && i.product_id == product.id).FirstOrDefault();
@@ -140,39 +116,43 @@ namespace AppAB.Controllers
                     }
                     else
                     {
-                        //Generate new GUID
-                        orders findOrder;
-                        string guidid = "";
-                        do
-                        {
-                            Guid GUIDid = Guid.NewGuid();
-                            guidid = GUIDid.ToString();
-                            findOrder = db.orders.Find(guidid);
-                        }
-                        while (findOrder != null);
-
-                        //Create new order with selected(added to cart) product
-                        orders newOrder = new orders();
-                        newOrder.id = guidid;
-                        newOrder.user_id = user.Id;
-                        newOrder.total_price = Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
-                        db.orders.Add(newOrder);
-
-                        //dodaj vnos v vmesno tabelo
-                        order_items item = new order_items();
-                        item.order_id = guidid;
-                        item.product_id = product.id;
-                        item.Quantity = 1;
-                        db.order_items.Add(item);
-
-                        //Set cookie
-                        context.Session[CartSessionKey] = guidid;
+                        CreateNewOrder(context, product, user);
                     }            
                 }
 
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = "MyCart" });
             }
+        }
+
+        private void CreateNewOrder(HttpContextBase context, products product, aspnetusers user) {
+            //Generate new GUID
+            orders findOrder;
+            string guidid = "";
+            do
+            {
+                Guid GUIDid = Guid.NewGuid();
+                guidid = GUIDid.ToString();
+                findOrder = db.orders.Find(guidid);
+            }
+            while (findOrder != null);
+
+            //Create new order with selected(added to cart) product
+            orders newOrder = new orders();
+            newOrder.id = guidid;
+            newOrder.user_id = user.Id;
+            newOrder.total_price = Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
+            db.orders.Add(newOrder);
+
+            //dodaj vnos v vmesno tabelo
+            order_items item = new order_items();
+            item.order_id = guidid;
+            item.product_id = product.id;
+            item.Quantity = 1;
+            db.order_items.Add(item);
+
+            //Set cookie
+            context.Session[CartSessionKey] = guidid;
         }
 
         // GET: Orders/Delete/5
