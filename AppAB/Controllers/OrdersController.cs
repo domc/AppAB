@@ -18,6 +18,7 @@ namespace AppAB.Controllers
     {
         private abEntities db = new abEntities();
         public const string CartSessionKey = "CartId";
+        private CultureInfo slovensko = new CultureInfo("sl-SI");
 
         // GET: Orders
         [Authorize(Roles = "admin")]
@@ -36,37 +37,48 @@ namespace AppAB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            orders orders=null;
+            HttpContextBase context = this.HttpContext;
+
+
+            //Coming from nav-link Kosarica
             //Find orderId(from Session) if it exists
             if (id == "MyCart")
             {
-                HttpContextBase context = this.HttpContext;
-                if (context.Session[CartSessionKey] == null)
-                {
-                    return View();
-                }
-                else
+                if (context.Session[CartSessionKey]!= null)
                 {
                     id = context.Session[CartSessionKey].ToString();
+
+                    //Get order from db
+                    orders = db.orders.Find(id);
+
+                    //Only show if the order was made by current user
+                    if (orders != null && System.Web.HttpContext.Current.User.Identity.GetUserId() != orders.user_id)
+                    {
+                        orders = null;
+                    }
                 }
 
             }
-
-            //Get order from db
-            orders orders = db.orders.Find(id);
-            if (orders == null)
+            //Coming from list of orders(admin)
+            else
             {
-                return HttpNotFound();
-            }
-            else if (System.Web.HttpContext.Current.User.Identity.GetUserId() != orders.user_id && !System.Web.HttpContext.Current.User.IsInRole("admin"))
-            {
-                //If order wasn't made by currently signed user return empty view/cart
-                //Admin is an exception, so he can check others orders..
-                return View();
-            }
+                if (System.Web.HttpContext.Current.User.IsInRole("admin"))
+                {
+                    //Get order from db
+                    orders = db.orders.Find(id);
+                    if (orders == null)
+                    {
+                        return HttpNotFound();
+                    }
+                }
+                
+            }            
 
             return View(orders);
         }
 
+        //Method for adding products to cart
         [HttpPost]
         [Authorize(Roles = "admin,user")]
         public ActionResult AddToOrder(int? productId)
@@ -100,7 +112,7 @@ namespace AppAB.Controllers
                         {
                             //Increase quantity if the product is already on the order
                             item.Quantity += 1;
-                            order.total_price += Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
+                            order.total_price += Convert.ToDecimal(product.price, slovensko);
                         }
                         else
                         {
@@ -111,7 +123,7 @@ namespace AppAB.Controllers
                             item.Quantity = 1;
 
                             order.order_items.Add(item);
-                            order.total_price += Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
+                            order.total_price += Convert.ToDecimal(product.price, slovensko);
                         }
                     }
                     else
@@ -141,10 +153,10 @@ namespace AppAB.Controllers
             orders newOrder = new orders();
             newOrder.id = guidid;
             newOrder.user_id = user.Id;
-            newOrder.total_price = Convert.ToDecimal(product.price, new CultureInfo("sl-SI"));
+            newOrder.total_price = Convert.ToDecimal(product.price, slovensko);
             db.orders.Add(newOrder);
 
-            //dodaj vnos v vmesno tabelo
+            //Add entry to order_items
             order_items item = new order_items();
             item.order_id = guidid;
             item.product_id = product.id;
