@@ -1,10 +1,6 @@
-﻿@model AppAB.orders
+﻿@model AppAB.Models.OrderViewModel
 
-@{
-    ViewBag.Title = "Naročilo";
-}
-
-<h2>Moj voziček</h2>
+<h2>@ViewBag.Title</h2>
 
 <hr />
 
@@ -13,23 +9,15 @@
     <div>        
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.total_price)
+                @Html.DisplayNameFor(model => model.orderTotal)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.total_price) €
+                @Html.DisplayFor(model => model.orderTotal) €
             </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.aspnetusers.Email)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.aspnetusers.Email)
-            </dd>        
         </dl>
         <hr />
-        @foreach (order_items item in Model.order_items)
+        @foreach (order_items item in Model.items)
         {
             <dl class="dl-horizontal">
                 <dt>@Html.DisplayNameFor(modelItem => item.products.name)</dt>

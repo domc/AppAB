@@ -37,15 +37,16 @@ namespace AppAB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            orders orders=null;
+            orders orders = null;
             HttpContextBase context = this.HttpContext;
+            ViewBag.Title = "Moja košarica";
 
 
             //Coming from nav-link Kosarica
             //Find orderId(from Session) if it exists
             if (id == "MyCart")
             {
-                if (context.Session[CartSessionKey]!= null)
+                if (context.Session[CartSessionKey] != null)
                 {
                     id = context.Session[CartSessionKey].ToString();
 
@@ -71,11 +72,25 @@ namespace AppAB.Controllers
                     {
                         return HttpNotFound();
                     }
+                    ViewBag.Title = orders.aspnetusers.UserName;
                 }
-                
-            }            
 
-            return View(orders);
+            }
+
+
+            // Set up our ViewModel
+            var viewModel = new OrderViewModel();
+            if (orders != null)
+            {
+                viewModel.items = orders.order_items.ToList();
+                viewModel.orderTotal = orders.total_price;
+            }
+            else
+            {
+                viewModel = null;
+            }
+            // Return the view
+            return View(viewModel);
         }
 
         //Method for adding products to cart
