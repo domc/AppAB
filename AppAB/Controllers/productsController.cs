@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AppAB;
+using AppAB.Models;
 
 namespace AppAB.Controllers
 {
@@ -38,7 +39,20 @@ namespace AppAB.Controllers
             var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "parfumi");
             ViewBag.listCategories = showCategories;
 
-            return View(products.ToList());
+            List<ProductListViewModel> productsList = new List<ProductListViewModel>();
+            foreach (products product in products)
+            {
+                ProductListViewModel vievModel = new ProductListViewModel {
+                    id=product.id,
+                    name = product.name,
+                    description=product.description,    //TO-DO substring!
+                    image=product.image,
+                    price = product.price
+                };
+                productsList.Add(vievModel);
+            }
+
+            return View(productsList);
         }
 
 

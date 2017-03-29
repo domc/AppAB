@@ -15,7 +15,7 @@
                         } else {
                             $('#item-count-' + data.deleteId).text(data.itemCount);
                         }
-                        $('#cart-total').text(data.totalPrice);
+                        $('#cart-total').text(data.totalPrice+" €");
                         $('#update-message').text(data.message);
                     }
                 });
