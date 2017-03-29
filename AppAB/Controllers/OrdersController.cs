@@ -152,7 +152,8 @@ namespace AppAB.Controllers
             }
         }
 
-        private void CreateNewOrder(HttpContextBase context, products product, aspnetusers user) {
+        private void CreateNewOrder(HttpContextBase context, products product, aspnetusers user)
+        {
             //Generate new GUID
             orders findOrder;
             string guidid = "";
@@ -180,6 +181,54 @@ namespace AppAB.Controllers
 
             //Set cookie
             context.Session[CartSessionKey] = guidid;
+        }
+
+        //
+        // AJAX: /Orders/RemoveFromOrder/5
+        [HttpPost]
+        public ActionResult RemoveFromOrder(int id)
+        {
+            //Find the user and order
+            aspnetusers user = db.aspnetusers.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            orders order = db.orders.Find(this.HttpContext.Session[CartSessionKey].ToString());
+
+            //If order was made by current user, remove the product from it
+            if (order.user_id == user.Id)
+            {
+                order_items item = db.order_items.Where(i => i.id == id).FirstOrDefault();
+                if (item != null)
+                {
+                    //Update total price
+                    order.total_price -= Convert.ToDecimal(item.products.price, slovensko);
+
+                    //Fill the viewModel, confirmation message
+                    var results = new RemoveFromOrderViewModel
+                    {
+                        message = Server.HtmlEncode(item.products.name) +
+                            " je bil odstranjen iz vaše košarice.",
+                        totalPrice = order.total_price,
+                        deleteId = id,
+                        itemCount = 0
+                };
+
+                    //Decrease quantity if there's more than 1 product or else remove it from the order
+                    if (item.Quantity > 1)
+                    {
+                        item.Quantity -= 1;
+                        results.itemCount = item.Quantity;            
+                    }
+                    else
+                    {
+                        order.order_items.Remove(item);
+                        db.order_items.Remove(item);
+                    }
+
+                    //Save changes to db and return our viewModel
+                    db.SaveChanges();                    
+                    return Json(results);
+                }
+            }
+            return Json(true);           
         }
 
         // GET: Orders/Delete/5

@@ -12,14 +12,15 @@
                 @Html.DisplayNameFor(model => model.orderTotal)
             </dt>
 
-            <dd>
+            <dd id="cart-total">
                 @Html.DisplayFor(model => model.orderTotal) €
             </dd>
         </dl>
+        <div id="update-message"></div>
         <hr />
         @foreach (order_items item in Model.items)
         {
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal" id="row-@item.id">
                 <dt>@Html.DisplayNameFor(modelItem => item.products.name)</dt>
                 <dd>
                     @Html.DisplayFor(modelItem => item.products.name)
@@ -33,9 +34,11 @@
                     @Html.DisplayFor(modelItem => item.products.price) €
                 </dd>
                 <dt>@Html.DisplayNameFor(modelItem => item.Quantity)</dt>
-                <dd>
+                <dd id="item-count-@item.id">
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </dd>
+                <dt></dt>
+                <dd><a href="#" class="removeLink" data-id="@item.id">Odstrani</a></dd>
             </dl>
         }
     </div>
