@@ -175,19 +175,28 @@ namespace AppAB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public ActionResult Create([Bind(Include = "id,name,description,image,price,create_date,brand,subcategory")] products products)
+        public ActionResult Create([Bind(Include = "name,description,image,price,brand,subcategory")] ProductCreateEditViewModel product)
         {
             if (ModelState.IsValid)
             {
-                products.create_date = DateTime.Now;
-                db.products.Add(products);
+                products newProduct = new products {
+                    name=product.name,
+                    description=product.description,
+                    image= product.image,
+                    price= product.price,
+                    brand=product.brand,
+                    subcategory=product.subcategory,
+                    create_date = DateTime.Now
+                };
+                
+                db.products.Add(newProduct);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.brand = new SelectList(db.product_brands, "id", "name", products.brand);
-            ViewBag.subcategory = new SelectList(db.product_subcategories, "id", "name", products.subcategory);
-            return View(products);
+            ViewBag.brand = new SelectList(db.product_brands, "id", "name", product.brand);
+            ViewBag.subcategory = new SelectList(db.product_subcategories, "id", "name", product.subcategory);
+            return View(product);
         }
 
         // GET: products/Edit/5
@@ -198,14 +207,27 @@ namespace AppAB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            products products = db.products.Find(id);
-            if (products == null)
+            products productDB = db.products.Find(id);
+            ProductCreateEditViewModel product;
+            if (productDB == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.brand = new SelectList(db.product_brands, "id", "name", products.brand);
-            ViewBag.subcategory = new SelectList(db.product_subcategories, "id", "name", products.subcategory);
-            return View(products);
+            else
+            {
+                product = new ProductCreateEditViewModel
+                {
+                    name = productDB.name,
+                    description = productDB.description,
+                    image = productDB.image,
+                    price = productDB.price,
+                    brand = productDB.brand,
+                    subcategory = productDB.subcategory
+                };
+            }
+            ViewBag.brand = new SelectList(db.product_brands, "id", "name", product.brand);
+            ViewBag.subcategory = new SelectList(db.product_subcategories, "id", "name", product.subcategory);
+            return View(product);
         }
 
         // POST: products/Edit/5
@@ -214,18 +236,27 @@ namespace AppAB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public ActionResult Edit([Bind(Include = "id,name,description,image,price,create_date,brand,subcategory")] products products)
+        public ActionResult Edit([Bind(Include = "id,name,description,image,price,brand,subcategory")] ProductCreateEditViewModel product)
         {
             if (ModelState.IsValid)
             {
-                products.create_date = DateTime.Now;
-                db.Entry(products).State = EntityState.Modified;
+                products productToEdit = db.products.Find(product.id);
+                productToEdit.name = product.name;
+                productToEdit.description = product.description;
+                productToEdit.image = product.image;
+                productToEdit.price = product.price;
+                productToEdit.brand = product.brand;
+                productToEdit.subcategory = product.subcategory;
+
+                //products.create_date = DateTime.Now;
+
+                db.Entry(productToEdit).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.brand = new SelectList(db.product_brands, "id", "name", products.brand);
-            ViewBag.subcategory = new SelectList(db.product_subcategories, "id", "name", products.subcategory);
-            return View(products);
+            ViewBag.brand = new SelectList(db.product_brands, "id", "name", product.brand);
+            ViewBag.subcategory = new SelectList(db.product_subcategories, "id", "name", product.subcategory);
+            return View(product);
         }
 
         // GET: products/Delete/5
@@ -277,7 +308,7 @@ namespace AppAB.Controllers
                 ProductListViewModel vievModel = new ProductListViewModel
                 {
                     id = product.id,
-                    name = product.name,
+                    name = (product.name.Length > 19) ? (product.name.Substring(0, 19) + "...") : product.name,
                     description = (product.description.Length > 14) ? (product.description.Substring(0, 14) + "...") : product.description,
                     image = product.image,
                     price = product.price

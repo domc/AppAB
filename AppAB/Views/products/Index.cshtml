@@ -40,8 +40,8 @@
             <div class="thumbnail">
                 <img src="~/Content/Images/sample.jpg" alt="Slika">
                 <div class="caption">
-                    <h4 style="max-height: 37px; overflow: hidden;">@Html.ActionLink((string)item.name, "Details", new { id = item.id })</h4>
-                    <p style="max-height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.description)</p>
+                    <h4 style="height: 37px; overflow: hidden;">@Html.ActionLink((string)item.name, "Details", new { id = item.id })</h4>
+                    <p style="height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.description)</p>
                     <p>@Html.DisplayFor(modelItem => item.price) €</p>
                     @if (Request.IsAuthenticated)
                     { 
