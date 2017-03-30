@@ -22,32 +22,12 @@ namespace AppAB
         }
     
         public int id { get; set; }
-        [Required]
-        [Display(Name = "Artikel")]
         public string name { get; set; }
-
-        [Required]
-        [Display(Name = "Opis artikla")]
         public string description { get; set; }
-
-        [Required]
-        [Display(Name = "Slika")]
         public string image { get; set; }
-
-        [Required]
-        [Display(Name = "Cena")]
-        [RegularExpression(@"^\d+\,\d{0,2}$", ErrorMessage = "Za vnos cene uporabi format brez presledkov in z vejico za decimalko: 110,00")]
         public string price { get; set; }
-
-        [Display(Name = "Dodano")]
         public System.DateTime create_date { get; set; }
-
-        [Required]
-        [Display(Name = "Znamka")]
         public int brand { get; set; }
-
-        [Required]
-        [Display(Name = "Kategorija")]
         public int subcategory { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

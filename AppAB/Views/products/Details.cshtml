@@ -1,4 +1,4 @@
-﻿@model AppAB.products
+﻿@model AppAB.Models.ProductDetailsDeleteViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -43,29 +43,12 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.create_date)
+            @Html.DisplayNameFor(model => model.brand)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.create_date)
+            @Html.DisplayFor(model => model.brand)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.product_brands.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.product_brands.name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.product_subcategories.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.product_subcategories.name)
-        </dd>
-
     </dl>
 </div>
 

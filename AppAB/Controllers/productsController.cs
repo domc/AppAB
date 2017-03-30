@@ -141,12 +141,23 @@ namespace AppAB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            products products = db.products.Find(id);
-            if (products == null)
+
+            products productDB = db.products.Find(id);
+            if (productDB == null)
             {
                 return HttpNotFound();
             }
-            return View(products);
+
+            ProductDetailsDeleteViewModel product = new ProductDetailsDeleteViewModel
+            {
+                id=productDB.id,
+                name = productDB.name,
+                description = productDB.description,
+                image = productDB.image,
+                price = productDB.price,
+                brand = productDB.product_brands.name
+            };
+            return View(product);
         }
 
         // GET: products/Create/subcategory(ie "parfumi")
@@ -267,12 +278,22 @@ namespace AppAB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            products products = db.products.Find(id);
-            if (products == null)
+            products productDB = db.products.Find(id);
+            if (productDB == null)
             {
                 return HttpNotFound();
             }
-            return View(products);
+
+            ProductDetailsDeleteViewModel product = new ProductDetailsDeleteViewModel
+            {
+                id = productDB.id,
+                name = productDB.name,
+                description = productDB.description,
+                image = productDB.image,
+                price = productDB.price,
+                brand = productDB.product_brands.name
+            };
+            return View(product);
         }
 
         // POST: products/Delete/5
@@ -281,10 +302,23 @@ namespace AppAB.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult DeleteConfirmed(int id)
         {
-            products products = db.products.Find(id);
-            db.products.Remove(products);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            //Find product
+            products product = db.products.Find(id);
+
+            //Delete product if it's not connected with FK to any order
+            if (!product.order_items.Any())
+            {
+                db.products.Remove(product);
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Delete", new { id = product.id }); //TO-DO set up a notification "Can't delete due to.."
+            }
+            
+            
         }
 
         protected override void Dispose(bool disposing)
