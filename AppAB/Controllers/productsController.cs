@@ -29,29 +29,17 @@ namespace AppAB.Controllers
             else
             {
                 products = products.Where(p => p.product_subcategories.name == filterCategory);
-            }            
-
-
-            ViewBag.Title = "Parfumi";
-            ViewBag.action = "Index";
+            }
 
             //Seznam kategorij za izbiro/filter
             var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "parfumi");
             ViewBag.listCategories = showCategories;
 
-            List<ProductListViewModel> productsList = new List<ProductListViewModel>();
-            foreach (products product in products)
-            {
-                ProductListViewModel vievModel = new ProductListViewModel {
-                    id=product.id,
-                    name = product.name,
-                    description=product.description,    //TO-DO substring!
-                    image=product.image,
-                    price = product.price
-                };
-                productsList.Add(vievModel);
-            }
+            //Prepare viewModel
+            List<ProductListViewModel> productsList = getProductsList(products.ToList());
 
+            ViewBag.Title = "Parfumi";
+            ViewBag.action = "Index";
             return View(productsList);
         }
 
@@ -74,16 +62,18 @@ namespace AppAB.Controllers
                 products = products.Where(p => p.product_subcategories.name == filterCategory);
             }
 
-            ViewBag.action = "Nega";
-            ViewBag.Title = "Izdelki za nego telesa";
-
             //Seznam kategorij za filter
             var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "nega_obraza" ||
                                                                      s.product_categories.name == "nega_telesa" ||
                                                                      s.product_categories.name == "nega_las");
             ViewBag.listCategories = showCategories;
 
-            return View("Index", products.ToList());
+            //Prepare viewModel
+            List<ProductListViewModel> productsList = getProductsList(products.ToList());
+
+            ViewBag.action = "Nega";
+            ViewBag.Title = "Izdelki za nego telesa";
+            return View("Index", productsList);
         }
 
         // GET: products/nohti
@@ -102,15 +92,17 @@ namespace AppAB.Controllers
             {
                 products = products.Where(p => p.product_subcategories.name == filterCategory);
             }
-
-            ViewBag.action = "Nohti";
-            ViewBag.Title = "Izdelki za nego nohtov";
-
+            
             //Seznam kategorij za filter
             var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "nohti");
             ViewBag.listCategories = showCategories;
 
-            return View("Index", products.ToList());
+            //Prepare viewModel
+            List<ProductListViewModel> productsList = getProductsList(products.ToList());
+
+            ViewBag.action = "Nohti";
+            ViewBag.Title = "Izdelki za nego nohtov";
+            return View("Index", productsList);
         }
 
         // GET: products/make_up
@@ -128,16 +120,18 @@ namespace AppAB.Controllers
             else
             {
                 products = products.Where(p => p.product_subcategories.name == filterCategory);
-            }
-
-            ViewBag.action = "Makeup";
-            ViewBag.Title = "Makeup";
+            }            
 
             //Seznam kategorij za filter
             var showCategories = db.product_subcategories.Where(s => s.product_categories.name == "make_up");
             ViewBag.listCategories = showCategories;
 
-            return View("Index", products.ToList());
+            //Prepare viewModel
+            List<ProductListViewModel> productsList = getProductsList(products.ToList());
+
+            ViewBag.action = "Makeup";
+            ViewBag.Title = "Makeup";
+            return View("Index", productsList);
         }
 
         // GET: products/Details/5
@@ -269,6 +263,28 @@ namespace AppAB.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        //
+        //Helper functions
+        //
+        //Get viewModels list for index page
+        private List<ProductListViewModel> getProductsList(List<products> products)
+        {
+            List<ProductListViewModel> productsList = new List<ProductListViewModel>();
+            foreach (products product in products)
+            {
+                ProductListViewModel vievModel = new ProductListViewModel
+                {
+                    id = product.id,
+                    name = product.name,
+                    description = (product.description.Length > 14) ? (product.description.Substring(0, 14) + "...") : product.description,
+                    image = product.image,
+                    price = product.price
+                };
+                productsList.Add(vievModel);
+            }
+            return productsList;
         }
     }
 }
