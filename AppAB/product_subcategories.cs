@@ -22,8 +22,6 @@ namespace AppAB
         }
     
         public int id { get; set; }
-
-        [Display(Name = "Kategorija")]
         public string name { get; set; }
         public int category { get; set; }
     
