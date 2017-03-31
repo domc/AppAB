@@ -17,7 +17,7 @@
             </dd>
         </dl>
         <div id="update-message"></div>
-        <hr />
+        <hr id="divideHr" />
         @foreach (order_items item in Model.items)
         {
             <dl class="dl-horizontal" id="row-@item.id">
@@ -46,4 +46,9 @@
 else
 {
     <p>Vaša košarica je prazna.</p>
+}
+
+@section scripts 
+{
+    @Scripts.Render("~/bundles/myScripts")
 }

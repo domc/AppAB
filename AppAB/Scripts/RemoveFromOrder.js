@@ -8,12 +8,15 @@
                 function (data) {
                     // Successful requests get here
                     // Update the page elements
-                    if (data != null)
-                    {
+                    if (data != null) {
                         if (data.itemCount == 0) {
-                            $('#row-' + data.deleteId).fadeOut('slow');
-                        } else {
+                            $('#row-' + data.deleteId).fadeOut('slow');                            
+                        }
+                        else {
                             $('#item-count-' + data.deleteId).text(data.itemCount);
+                        }
+                        if (data.totalPrice === 0) {
+                            $('#divideHr').hide();
                         }
                         $('#cart-total').text(data.totalPrice+" €");
                         $('#update-message').text(data.message);

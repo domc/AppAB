@@ -98,7 +98,7 @@ namespace AppAB.Controllers
             order = db.orders.Find(id);
 
             //Only set viewModel if the order was made by current user
-            if (order != null && System.Web.HttpContext.Current.User.Identity.GetUserId() == order.user_id)
+            if (order != null && order.order_items.Count() > 0 && System.Web.HttpContext.Current.User.Identity.GetUserId() == order.user_id)
             {
                 viewModel = new OrderViewModel();
                 viewModel.items = order.order_items.ToList();
