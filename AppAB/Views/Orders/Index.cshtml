@@ -1,18 +1,22 @@
-﻿@model IEnumerable<AppAB.orders>
+﻿@model IEnumerable<AppAB.Models.OrdersListViewModel>
 
 @{
     ViewBag.Title = "Seznam";
 }
 
 <h2>Seznam naročil</h2>
+<hr />
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.total_price)
+            @Html.DisplayNameFor(model => model.userName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.aspnetusers.Email)
+            @Html.DisplayNameFor(model => model.numberOfItems)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_price)
         </th>
         <th></th>
     </tr>
@@ -20,10 +24,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.total_price) €
+            @Html.DisplayFor(modelItem => item.userName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.aspnetusers.Email)
+            @Html.DisplayFor(modelItem => item.numberOfItems)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_price) €
         </td>
         <td>
             @Html.ActionLink("Details", "Details", new { id=item.id }) |

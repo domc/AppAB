@@ -20,80 +20,98 @@ namespace AppAB.Controllers
         public const string CartSessionKey = "CartId";
         private CultureInfo slovensko = new CultureInfo("sl-SI");
 
+        //
         // GET: Orders
         [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
-            var orders = db.orders.Include(o => o.aspnetusers);
-            return View(orders.ToList());
+            var orders = db.orders.Include(o => o.aspnetusers).ToList();
+
+            //Prepare a list of viewModels
+            List<OrdersListViewModel> list = null;
+            if (orders != null)
+            {
+                list = new List<OrdersListViewModel>();
+                foreach (orders order in orders)
+                {
+                    OrdersListViewModel orderViewModel = new OrdersListViewModel
+                    {
+                        id=order.id,
+                        userName = order.aspnetusers.UserName,
+                        numberOfItems = order.order_items.Count(),
+                        total_price=order.total_price
+                    };
+                    list.Add(orderViewModel);
+                }
+            }
+            return View(list);
         }
 
-        // GET: Orders/Details/5
-        [Authorize(Roles = "admin,user")]
+        //
+        //GET: Orders/Details/id
+        //Get contents of the order/cart //Coming from list of orders(admin)
+        [Authorize(Roles = "admin")]
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            OrderViewModel viewModel = null;
+            HttpContextBase context = this.HttpContext;     
 
-            orders orders = null;
-            HttpContextBase context = this.HttpContext;
-            ViewBag.Title = "Moja košarica";
-
-
-            //Coming from nav-link Kosarica
-            //Find orderId(from Session) if it exists
-            if (id == "MyCart")
+            //Get order from db
+            orders order = db.orders.Find(id);
+            if (order == null)
             {
-                if (context.Session[CartSessionKey] != null)
-                {
-                    id = context.Session[CartSessionKey].ToString();
-
-                    //Get order from db
-                    orders = db.orders.Find(id);
-
-                    //Only show if the order was made by current user
-                    if (orders != null && System.Web.HttpContext.Current.User.Identity.GetUserId() != orders.user_id)
-                    {
-                        orders = null;
-                    }
-                }
-
-            }
-            //Coming from list of orders(admin)
-            else
-            {
-                if (System.Web.HttpContext.Current.User.IsInRole("admin"))
-                {
-                    //Get order from db
-                    orders = db.orders.Find(id);
-                    if (orders == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    ViewBag.Title = orders.aspnetusers.UserName;
-                }
-
-            }
-
-
-            // Set up our ViewModel
-            var viewModel = new OrderViewModel();
-            if (orders != null)
-            {
-                viewModel.items = orders.order_items.ToList();
-                viewModel.orderTotal = orders.total_price;
+                return HttpNotFound();
             }
             else
             {
-                viewModel = null;
+                // Set up our ViewModel
+                viewModel = new OrderViewModel();
+                viewModel.items = order.order_items.ToList();
+                viewModel.orderTotal = order.total_price;
             }
+            ViewBag.Title = order.aspnetusers.UserName;
+            
             // Return the view
             return View(viewModel);
         }
 
-        //Method for adding products to cart
+        //GET: Orders/MyCart/id
+        //Get contents of the the cart //Coming from nav-link Kosarica
+        [Authorize(Roles = "admin,user")]
+        public ActionResult MyCart(string id)
+        {
+            orders order=null;
+            OrderViewModel viewModel = null;
+            HttpContextBase context = this.HttpContext;
+
+            //If id is null find orderId(from Session) if it exists
+            if (string.IsNullOrEmpty(id) && context.Session[CartSessionKey] != null)
+            {
+                id = context.Session[CartSessionKey].ToString();
+            }
+
+            //Get order from db
+            order = db.orders.Find(id);
+
+            //Only set viewModel if the order was made by current user
+            if (order != null && System.Web.HttpContext.Current.User.Identity.GetUserId() == order.user_id)
+            {
+                viewModel = new OrderViewModel();
+                viewModel.items = order.order_items.ToList();
+                viewModel.orderTotal = order.total_price;
+            }
+            ViewBag.Title = "Moja košarica";
+
+            // Return the view
+            return View("Details", viewModel);
+        }
+
+        //
+        //Method for adding products to order/cart
         [HttpPost]
         [Authorize(Roles = "admin,user")]
         public ActionResult AddToOrder(int? productId)
@@ -110,9 +128,10 @@ namespace AppAB.Controllers
                 products product = db.products.Find(productId);
                 aspnetusers user = db.aspnetusers.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
 
+                string redirectID = "";
                 if (context.Session[CartSessionKey] == null)
                 {
-                    CreateNewOrder(context, product, user);
+                    redirectID = CreateNewOrder(context, product, user);                    
                 }
                 else
                 {
@@ -122,37 +141,20 @@ namespace AppAB.Controllers
                     //If order was made by current user, add product to it, if not, create a new order
                     if (order.user_id == user.Id)
                     {
-                        order_items item = db.order_items.Where(i => i.order_id == order.id && i.product_id == product.id).FirstOrDefault();
-                        if (item != null)
-                        {
-                            //Increase quantity if the product is already on the order
-                            item.Quantity += 1;
-                            order.total_price += Convert.ToDecimal(product.price, slovensko);
-                        }
-                        else
-                        {
-                            //Add product to order
-                            item = new order_items();
-                            item.order_id = order.id;
-                            item.product_id = product.id;
-                            item.Quantity = 1;
-
-                            order.order_items.Add(item);
-                            order.total_price += Convert.ToDecimal(product.price, slovensko);
-                        }
+                        AddProductToOrder(order, product);
+                        redirectID = order.id;
                     }
                     else
                     {
-                        CreateNewOrder(context, product, user);
+                        redirectID = CreateNewOrder(context, product, user);
                     }            
                 }
-
-                db.SaveChanges();
-                return RedirectToAction("Details", new { id = "MyCart" });
-            }
+                return RedirectToAction("MyCart", new { id = redirectID });
+            }            
         }
 
-        private void CreateNewOrder(HttpContextBase context, products product, aspnetusers user)
+        //Create new order and return its ID
+        private string CreateNewOrder(HttpContextBase context, products product, aspnetusers user)
         {
             //Generate new GUID
             orders findOrder;
@@ -179,8 +181,35 @@ namespace AppAB.Controllers
             item.Quantity = 1;
             db.order_items.Add(item);
 
+            db.SaveChanges();
+
             //Set cookie
             context.Session[CartSessionKey] = guidid;
+
+            return guidid;
+        }
+
+        private void AddProductToOrder(orders order, products product)
+        {
+            order_items item = db.order_items.Where(i => i.order_id == order.id && i.product_id == product.id).FirstOrDefault();
+            if (item != null)
+            {
+                //Increase quantity if the product is already on the order
+                item.Quantity += 1;
+                order.total_price += Convert.ToDecimal(product.price, slovensko);
+            }
+            else
+            {
+                //Add the product to order
+                item = new order_items();
+                item.order_id = order.id;
+                item.product_id = product.id;
+                item.Quantity = 1;
+
+                order.order_items.Add(item);
+                order.total_price += Convert.ToDecimal(product.price, slovensko);
+            }
+            db.SaveChanges();
         }
 
         //
@@ -209,7 +238,7 @@ namespace AppAB.Controllers
                         totalPrice = order.total_price,
                         deleteId = id,
                         itemCount = 0
-                };
+                    };
 
                     //Decrease quantity if there's more than 1 product or else remove it from the order
                     if (item.Quantity > 1)
@@ -231,6 +260,8 @@ namespace AppAB.Controllers
             return Json(true);           
         }
 
+        //
+        //Delete not fully implemented yet(products FK order_items)
         // GET: Orders/Delete/5
         [Authorize(Roles = "admin")]
         public ActionResult Delete(string id)

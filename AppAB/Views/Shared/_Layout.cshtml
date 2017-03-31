@@ -31,7 +31,7 @@
                     }
                     @if (Request.IsAuthenticated)
                     {
-                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Orders" && ViewContext.RouteData.Values["Action"].ToString() == "Details" ? "active" : "")">@Html.ActionLink("Košarica", "Details", "Orders", new { id = "MyCart" }, null)</li>
+                        <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "MyCart" ? "active" : "")">@Html.ActionLink("Košarica", "MyCart", "Orders")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

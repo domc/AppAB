@@ -221,7 +221,6 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\ProductViewModels.cs" />
-    <Compile Include="Models\RemoveFromOrderViewModel.cs" />
     <Compile Include="orders.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

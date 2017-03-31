@@ -13,4 +13,26 @@ namespace AppAB.Models
         [Display(Name = "Skupna cena")]
         public decimal orderTotal { get; set; }
     }
+
+    public class OrdersListViewModel
+    {
+        public string id { get; set; }
+
+        [Display(Name = "Skupna cena")]
+        public decimal total_price { get; set; }
+
+        [Display(Name = "Uporabnik")]
+        public string userName { get; set; }
+
+        [Display(Name = "Št. artiklov v košarici")]
+        public int numberOfItems { get; set; }
+    }
+
+    public class RemoveFromOrderViewModel
+    {
+        public string message { get; set; }
+        public int itemCount { get; set; }
+        public decimal totalPrice { get; set; }
+        public int deleteId { get; set; }
+    }
 }
