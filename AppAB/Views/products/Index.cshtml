@@ -44,10 +44,12 @@
                     <p style="height: 37px; overflow: hidden;">@Html.DisplayFor(modelItem => item.description)</p>
                     <p>@Html.DisplayFor(modelItem => item.price) €</p>
                     @if (Request.IsAuthenticated)
-                    { 
-                        <form method="post" action="@Url.Action("AddToOrder", "Orders", new { productId = item.id })">
+                    {
+                        using (Html.BeginForm("AddToOrder", "Orders", new { productId = item.id }))
+                        {
+                            @Html.AntiForgeryToken()
                             <input type="submit" class="btn btn-default" value="V košarico" />
-                        </form>
+                        }
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("admin"))
                     {

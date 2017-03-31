@@ -111,6 +111,7 @@ namespace AppAB.Controllers
         //
         //Method for adding products to order/cart
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin,user")]
         public ActionResult AddToOrder(int? productId)
         {
