@@ -58,7 +58,6 @@ namespace AppAB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             OrderViewModel viewModel = null;
-            HttpContextBase context = this.HttpContext;     
 
             //Get order from db
             orders order = db.orders.Find(id);
@@ -86,12 +85,11 @@ namespace AppAB.Controllers
         {
             orders order=null;
             OrderViewModel viewModel = null;
-            HttpContextBase context = this.HttpContext;
 
             //If id is null find orderId(from Session) if it exists
-            if (string.IsNullOrEmpty(id) && context.Session[CartSessionKey] != null)
+            if (string.IsNullOrEmpty(id) && System.Web.HttpContext.Current.Session[CartSessionKey] != null)
             {
-                id = context.Session[CartSessionKey].ToString();
+                id = System.Web.HttpContext.Current.Session[CartSessionKey].ToString();
             }
 
             //Get order from db
@@ -122,21 +120,19 @@ namespace AppAB.Controllers
             }
             else
             {
-                HttpContextBase context = this.HttpContext;
-
                 //Find current user and product to add
                 products product = db.products.Find(productId);
                 aspnetusers user = db.aspnetusers.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
 
                 string redirectID = "";
-                if (context.Session[CartSessionKey] == null)
+                if (System.Web.HttpContext.Current.Session[CartSessionKey] == null)
                 {
-                    redirectID = CreateNewOrder(context, product, user);                    
+                    redirectID = CreateNewOrder(product, user);                    
                 }
                 else
                 {
                     //Find the order
-                    orders order = db.orders.Find(context.Session[CartSessionKey].ToString());
+                    orders order = db.orders.Find(System.Web.HttpContext.Current.Session[CartSessionKey].ToString());
 
                     //If order was made by current user, add product to it, if not, create a new order
                     if (order.user_id == user.Id)
@@ -146,7 +142,7 @@ namespace AppAB.Controllers
                     }
                     else
                     {
-                        redirectID = CreateNewOrder(context, product, user);
+                        redirectID = CreateNewOrder(product, user);
                     }            
                 }
                 return RedirectToAction("MyCart", new { id = redirectID });
@@ -154,7 +150,7 @@ namespace AppAB.Controllers
         }
 
         //Create new order and return its ID
-        private string CreateNewOrder(HttpContextBase context, products product, aspnetusers user)
+        private string CreateNewOrder(products product, aspnetusers user)
         {
             //Generate new GUID
             orders findOrder;
@@ -184,7 +180,7 @@ namespace AppAB.Controllers
             db.SaveChanges();
 
             //Set cookie
-            context.Session[CartSessionKey] = guidid;
+            System.Web.HttpContext.Current.Session[CartSessionKey] = guidid;
 
             return guidid;
         }
@@ -219,7 +215,7 @@ namespace AppAB.Controllers
         {
             //Find the user and order
             aspnetusers user = db.aspnetusers.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
-            orders order = db.orders.Find(this.HttpContext.Session[CartSessionKey].ToString());
+            orders order = db.orders.Find(System.Web.HttpContext.Current.Session[CartSessionKey].ToString());
 
             //If order was made by current user, remove the product from it
             if (order.user_id == user.Id)
