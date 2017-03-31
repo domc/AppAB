@@ -36,10 +36,12 @@ namespace AppAB.Controllers
                 {
                     OrdersListViewModel orderViewModel = new OrdersListViewModel
                     {
-                        id=order.id,
+                        id = order.id,
                         userName = order.aspnetusers.UserName,
                         numberOfItems = order.order_items.Count(),
-                        total_price=order.total_price
+                        total_price = order.total_price,
+                        created = order.created.ToString("dd-MMM-yyyy"),
+                        confirmed = order.confirmed == 1 ? "true" : "false"
                     };
                     list.Add(orderViewModel);
                 }
@@ -57,7 +59,7 @@ namespace AppAB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderViewModel viewModel = null;
+            OrderDetailViewModel viewModel = null;
 
             //Get order from db
             orders order = db.orders.Find(id);
@@ -68,9 +70,11 @@ namespace AppAB.Controllers
             else
             {
                 // Set up our ViewModel
-                viewModel = new OrderViewModel();
+                viewModel = new OrderDetailViewModel();
                 viewModel.items = order.order_items.ToList();
                 viewModel.orderTotal = order.total_price;
+                viewModel.created = order.created.ToString("dd-MMM-yyyy");
+                viewModel.confirmed = order.confirmed == 1 ? "true" : "false";
             }
             ViewBag.Title = order.aspnetusers.UserName;
             
@@ -105,7 +109,7 @@ namespace AppAB.Controllers
             ViewBag.Title = "Moja košarica";
 
             // Return the view
-            return View("Details", viewModel);
+            return View(viewModel);
         }
 
         //

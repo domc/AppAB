@@ -14,6 +14,20 @@ namespace AppAB.Models
         public decimal orderTotal { get; set; }
     }
 
+    public class OrderDetailViewModel
+    {
+        public List<order_items> items { get; set; }
+
+        [Display(Name = "Skupna cena")]
+        public decimal orderTotal { get; set; }
+
+        [Display(Name = "Ustvarjeno")]
+        public string created { get; set; }
+
+        [Display(Name = "Naročilo oddano")]
+        public string confirmed { get; set; }
+    }
+
     public class OrdersListViewModel
     {
         public string id { get; set; }
@@ -26,6 +40,12 @@ namespace AppAB.Models
 
         [Display(Name = "Št. artiklov v košarici")]
         public int numberOfItems { get; set; }
+
+        [Display(Name = "Ustvarjeno")]
+        public string created { get; set; }
+
+        [Display(Name = "Naročilo oddano")]
+        public string confirmed { get; set; }
     }
 
     public class RemoveFromOrderViewModel

@@ -1,4 +1,4 @@
-﻿@model AppAB.Models.OrderDetailViewModel
+﻿@model AppAB.Models.OrderViewModel
 
 <h2>@ViewBag.Title</h2>
 
@@ -6,25 +6,14 @@
 
 @if (Model != null)
 {
-    <div>        
+    <div>
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(model => model.orderTotal)
             </dt>
+
             <dd id="cart-total">
                 @Html.DisplayFor(model => model.orderTotal) €
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.created)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.created)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.confirmed)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.confirmed)
             </dd>
         </dl>
         <div id="update-message"></div>
@@ -48,6 +37,8 @@
                 <dd id="item-count-@item.id">
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </dd>
+                <dt></dt>
+                <dd><a href="#" class="removeLink" data-id="@item.id">Odstrani</a></dd>
             </dl>
         }
     </div>
@@ -55,4 +46,9 @@
 else
 {
     <p>Vaša košarica je prazna.</p>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/myScripts")
 }

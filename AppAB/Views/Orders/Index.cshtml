@@ -18,6 +18,12 @@
         <th>
             @Html.DisplayNameFor(model => model.total_price)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.confirmed)
+        </th>
         <th></th>
     </tr>
 
@@ -31,6 +37,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.total_price) €
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.created)
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.confirmed)
         </td>
         <td>
             @Html.ActionLink("Details", "Details", new { id=item.id }) |

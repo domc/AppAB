@@ -77,7 +77,9 @@
           </Key>
           <Property Name="id" Type="varchar" MaxLength="36" Nullable="false" />
           <Property Name="total_price" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="created" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="user_id" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="confirmed" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="product_brands">
           <Key>
@@ -375,6 +377,8 @@
           <Property Name="user_id" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="aspnetusers" Relationship="Self.orders_ibfk_1" FromRole="orders" ToRole="aspnetusers" />
           <NavigationProperty Name="order_items" Relationship="Self.order_items_ibfk_1" FromRole="orders" ToRole="order_items" />
+          <Property Name="created" Type="DateTime" Nullable="false" />
+          <Property Name="confirmed" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="product_brands">
           <Key>
@@ -640,6 +644,8 @@
           <EntitySetMapping Name="orders">
             <EntityTypeMapping TypeName="abdbModel.orders">
               <MappingFragment StoreEntitySet="orders">
+                <ScalarProperty Name="confirmed" ColumnName="confirmed" />
+                <ScalarProperty Name="created" ColumnName="created" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="total_price" ColumnName="total_price" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
