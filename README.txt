@@ -1,4 +1,4 @@
-C# MVC 5 app - AppAB
+C# MVC 5 app, MySQL database - AppAB
 =============================================
 Web store with parfumes etc...mostly for learning purposes.
 
@@ -9,10 +9,10 @@ Roles:
 =============================================
 AB to do:
 - posting security (ajax posts)
-- naročila: potrditev
+- confirmation of orders
 - adding photos
 - thumbnail style
 - users: edit info
 
-- register confirmation (mail)
+- register confirmation (email)
 - import products
